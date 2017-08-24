@@ -32,14 +32,52 @@ window.findNRooksSolution = function(n) {
   
   
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
-
+  var solutionCount = 0; //fixme
+  n = 3;
+  var testBoard = new Board({'n': n});
+  
+  //Create variables for incrementing the toggle indices.
+  //Toggle testBoard with all possible combinations.  
+  //For every toggle combination - Use helper functions to check for solution.  
+  //If solution exists, increment number of solutions.
+  
+  // if (n === 1) {
+  //   testBoard.togglePiece(0, 0);
+  //   solutionCount = checkRookSolution(testBoard, solutionCount);
+  // }
+  
+  var recParse = function(board, unplacedRooks, nextRow, nextCol) {
+    if (unplacedRooks === 0) {
+      solutionCount++;
+      return;
+    } else {
+      board.togglePiece(nextRow, nextCol);
+      if (board.hasAnyRooksConflicts()) {
+        board.togglePiece(nextRow, nextCol);
+        for (var i = nextRow; i < n; i++) {
+          for (var j = nextCol; j < n; j++) {
+            recParse(board, unplacedRooks, i, j);
+          }
+        }
+      } else {
+        unplacedRooks--;
+        for (var i = nextRow + 1; i < n; i++) {
+          for (var j = 0; j < n; j++) {
+            recParse(board, unplacedRooks, i, j);
+          }
+        }
+      }
+    }
+  };
+  
+  recParse(testBoard, n, 0, 0);
+  
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };

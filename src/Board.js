@@ -221,7 +221,7 @@
       for (var i = 1; i < this.get('n') + 2; i++) {
         tests.push(i);
       }
-      console.log(tests);
+      // console.log(tests);
       for (var i = 0; i < tests.length; i++) {
         if (this.hasMinorDiagonalConflictAt(tests[i])) {
           return true;
